@@ -10,14 +10,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 use Illuminate\Support\Facades\Http;
-use Symfony\Component\DomCrawler\Crawler;
 
-class ScrapProductList implements ShouldQueue
+class ScrapProductPage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $url;
-    const SCRAPING_TARGET_BASE_URL = 'https://digikala.com';
     /**
      * Create a new job instance.
      *
@@ -36,9 +34,6 @@ class ScrapProductList implements ShouldQueue
     public function handle()
     {
         $response = Http::get($this->url);
-        $crawler = (new Crawler($response->body()))->filter('a.c-product-box__img');
-        $crawler->each(function ($node) {
-            ScrapProductPage::dispatch(self::SCRAPING_TARGET_BASE_URL.$node->attr('href'));
-        });
+        dd($response);
     }
 }
