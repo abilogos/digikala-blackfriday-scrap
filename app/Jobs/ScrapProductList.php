@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ScrapProductList implements ShouldQueue
 {
@@ -34,6 +35,9 @@ class ScrapProductList implements ShouldQueue
     public function handle()
     {
         $response = Http::get($this->url);
-        dd($response->body());
+        $crawler = (new Crawler($response->body()))->filter('a.c-product-box__img');
+        $crawler->each(function ($node) {
+            echo $node->attr('href') ;
+        });
     }
 }
