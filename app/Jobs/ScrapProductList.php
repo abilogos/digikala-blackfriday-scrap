@@ -34,5 +34,6 @@ class ScrapProductList implements ShouldQueue
     public function handle()
     {
         $response = Http::get($this->url);
+        dd($response->body());
     }
 }
