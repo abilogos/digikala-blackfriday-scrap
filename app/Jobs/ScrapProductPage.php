@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
+use App\Models\Picture;
 
 class ScrapProductPage implements ShouldQueue
 {
@@ -42,6 +43,10 @@ class ScrapProductPage implements ShouldQueue
             $matches = [];
             \preg_match('/_(.*).jpg/i', $src, $matches);
             $name = $matches[1];
+            Picture::create([
+                'src' => $src,
+                'number' => $name,
+            ]);
         });
     }
 }
