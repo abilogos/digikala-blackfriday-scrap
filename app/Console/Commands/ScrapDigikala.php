@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
+use App\Jobs\ScrapProductList;
 
 class ScrapDigikala extends Command
 {
@@ -41,9 +41,8 @@ class ScrapDigikala extends Command
         $toPage = (int)$this->argument('page');
         for ($i=1;$i<=$toPage;$i++) {
             $url = "https://www.digikala.com/treasure-hunt/products/?pageno=${i}&sortby=1";
+            ScrapProductList::dispatch($url);
         }
-        //$response = Http::get();
-        //dd($response);
         return Command::SUCCESS;
     }
 }
