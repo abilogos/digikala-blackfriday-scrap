@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ScrapProductPage implements ShouldQueue
 {
@@ -34,6 +35,13 @@ class ScrapProductPage implements ShouldQueue
     public function handle()
     {
         $response = Http::get($this->url);
-        dd($response);
+        $crawler = (new Crawler($response->body()))->filter('.c-remodal-gallery__thumb.js-image-thumb img');
+        $crawler->each(function ($node) {
+            $src = $node->attr('data-src');
+            $src = explode('?', $src)[0];
+            $matches = [];
+            \preg_match('/_(.*).jpg/i', $src, $matches);
+            $name = $matches[1];
+        });
     }
 }
