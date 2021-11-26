@@ -42,11 +42,13 @@ class ScrapProductPage implements ShouldQueue
             $src = explode('?', $src)[0];
             $matches = [];
             \preg_match('/_(.*).jpg/i', $src, $matches);
-            $name = $matches[1];
-            Picture::create([
-                'src' => $src,
-                'number' => $name,
-            ]);
+            if(count($matches) > 1){
+                $name = $matches[1];
+                Picture::create([
+                    'src' => $src,
+                    'number' => $name,
+                ]);
+            }
         });
     }
 }
